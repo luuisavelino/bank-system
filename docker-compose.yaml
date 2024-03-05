@@ -1,0 +1,32 @@
+version: "3.5"
+
+services:
+  postgres:
+    container_name: rinha_postgres
+    image: postgres:14-alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres:/docker-entrypoint-initdb.d:ro
+    environment:
+      POSTGRES_DB: rinha
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      PG_MAX_WAL_SIZE: '2GB'            # Increases the maximum size of WAL files before triggering a checkpoint
+      PG_MIN_WAL_SIZE: '1GB'            # Sets the minimum size of WAL files
+      PG_CHECKPOINT_TIMEOUT: '10min'    # Increases the time between automatic WAL checkpoints
+      PG_WORK_MEM: '64MB'               # Sets the amount of memory used for query operations like sorts and hashes
+      PG_MAINTENANCE_WORK_MEM: '128MB'  # Sets the maximum amount of memory for maintenance operations, such as vacuuming
+      PG_EFFECTIVE_CACHE_SIZE: '2GB'    # Advises the planner on how much memory is available for caching data
+      PG_SHARED_BUFFERS: '512MB'        # Sets the amount of memory the database server uses for shared memory buffers
+      PG_MAX_CONNECTIONS: '40'          # Adjusts the maximum number of concurrent connections
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: "200MB"
+
+networks:
+  default:
+    driver: bridge
+    name: rinha-nginx-2024q1

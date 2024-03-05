@@ -18,6 +18,6 @@ type bankServiceInterface struct {
 }
 
 type BankServiceInterface interface {
-	BankTransaction(ctx context.Context, id int64, bankTransaction models.BankTransactionDomainInterface) error
-	BankStatement(ctx context.Context, id int64) error
+	BankTransaction(ctx context.Context, id int64, bankTransaction models.BankTransactionDomainInterface) (models.BankAccountDomainInterface, error)
+	BankStatement(ctx context.Context, id int64) (models.BankStatementDomainInterface, error)
 }

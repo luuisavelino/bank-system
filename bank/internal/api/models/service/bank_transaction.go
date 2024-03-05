@@ -10,10 +10,11 @@ import (
 
 func (bs *bankServiceInterface) BankTransaction(
 	ctx context.Context, id int64, bankTransaction models.BankTransactionDomainInterface,
-) error {
-	logger.Info("Init RemoveBank service",
-		zap.String("journey", "RemoveBank"),
+) (models.BankAccountDomainInterface, error) {
+	logger.Info("Init BankTransaction service",
+		zap.String("journey", "Transaction"),
 	)
 
-	return nil
+	account, err := bs.bankRepository.DoTransaction(ctx, id, bankTransaction)
+	return account, err
 }

@@ -1,17 +1,23 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/luuisavelino/rinha-de-backend-2024-q1/internal/api/controllers/model/request"
+	"github.com/luuisavelino/rinha-de-backend-2024-q1/internal/api/controllers/model/response"
 	"github.com/luuisavelino/rinha-de-backend-2024-q1/internal/api/models"
 	"github.com/luuisavelino/rinha-de-backend-2024-q1/pkg/logger"
 	"go.uber.org/zap"
 )
 
 func (sc *bankControllerInterface) BankTransaction(c *gin.Context) {
+	// calculate time
+	start := time.Now()
+
 	logger.Info("Init BankTransaction controller",
 		zap.String("journey", "Transaction"),
 	)
@@ -22,9 +28,11 @@ func (sc *bankControllerInterface) BankTransaction(c *gin.Context) {
 			err,
 			zap.String("journey", "Transaction"),
 		)
-		c.JSON(http.StatusBadRequest, gin.H{
+		c.JSON(http.StatusUnprocessableEntity, gin.H{
 			"status": "error", "message": err.Error(),
 		})
+
+		fmt.Println("BankTransaction took", time.Since(start))
 		return
 	}
 
@@ -34,9 +42,11 @@ func (sc *bankControllerInterface) BankTransaction(c *gin.Context) {
 			err,
 			zap.String("journey", "Transaction"),
 		)
-		c.JSON(http.StatusBadRequest, gin.H{
+		c.JSON(http.StatusUnprocessableEntity, gin.H{
 			"status": "error", "message": err.Error(),
 		})
+
+		fmt.Println("BankTransaction took", time.Since(start))
 		return
 	}
 
@@ -46,15 +56,18 @@ func (sc *bankControllerInterface) BankTransaction(c *gin.Context) {
 		bankTransactionRequest.Tipo,
 	)
 
-	err = sc.service.BankTransaction(c.Request.Context(), id, bankTransaction)
+	account, err := sc.service.BankTransaction(c.Request.Context(), id, bankTransaction)
 	if err != nil {
 		logger.Error("Error to create bank transaction",
 			err,
 			zap.String("journey", "Transaction"),
 		)
-		c.JSON(http.StatusBadRequest, gin.H{
+
+		c.JSON(http.StatusUnprocessableEntity, gin.H{
 			"status": "error", "message": err.Error(),
 		})
+
+		fmt.Println("BankTransaction took", time.Since(start))
 		return
 	}
 
@@ -62,7 +75,7 @@ func (sc *bankControllerInterface) BankTransaction(c *gin.Context) {
 		zap.String("journey", "Transaction"),
 	)
 
-	c.JSON(http.StatusCreated, gin.H{
-		"status": "success", "message": "transaction done with success",
-	})
+	c.JSON(http.StatusOK, response.NewBankTransactionResponse(account))
+
+	fmt.Println("BankTransaction took", time.Since(start))
 }
