@@ -1,12 +1,10 @@
 # Control Bank
 
-Realiza o controle do sistema
+Realiza o controle do sistema de banco
 
 ## Implementação
 
-| Endpoint                    | Método | Descrição                                           | Exemplo de Uso                  |
-|-----------------------------|--------|-----------------------------------------------------|---------------------------------|
-| `/api/v1/banks`           | GET    | Obter a lista de sistemas                           | `GET /api/users`                |
-| `/api/v1/banks/:uuid`     | GET    | Obter detalhes de um sistema específico pelo UUID   | `GET /api/users/123`            |
-| `/api/v1/banks/:uuid`     | POST   | Cria um sistema novo a partir de um UUID            | `POST /api/users/123`           |
-| `/api/v1/banks/:uuid`     | DELETE | Deleta um sistema a partir de um UUID               | `DELETE /api/users/123`         |
+| Endpoint                    | Método | Descrição                                           |
+|-----------------------------|--------|-----------------------------------------------------|
+| `/clientes/[id]/extrato`    |  GET   | Pega o extrato de transações do cliente             |
+| `/clientes/[id]/transacoes` |  POST  | Realiza a transação para determinado cliente        |
