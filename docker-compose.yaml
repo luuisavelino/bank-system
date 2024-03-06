@@ -23,7 +23,7 @@ services:
       resources:
         limits:
           cpus: "0.25"
-          memory: "190MB"
+          memory: "100MB"
 
   api02:
     <<: *api 
@@ -66,12 +66,11 @@ services:
       PG_EFFECTIVE_CACHE_SIZE: '2GB'    # Advises the planner on how much memory is available for caching data
       PG_SHARED_BUFFERS: '512MB'        # Sets the amount of memory the database server uses for shared memory buffers
       PG_MAX_CONNECTIONS: '100'         # Adjusts the maximum number of concurrent connections
-      PG_MIN_CONNECTIONS: '50'
     deploy:
       resources:
         limits:
           cpus: '0.5'
-          memory: "70MB"
+          memory: "200MB"
 
 networks:
   default:

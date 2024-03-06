@@ -1,8 +1,3 @@
-DROP TABLE IF EXISTS clients;
-DROP TABLE IF EXISTS transactions;
-DROP TYPE IF EXISTS accounts;
-DROP TYPE IF EXISTS "transaction_types";
-
 CREATE TYPE "transaction_types" AS ENUM ('c', 'd');
 
 CREATE UNLOGGED TABLE clients (

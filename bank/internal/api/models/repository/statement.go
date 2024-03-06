@@ -28,7 +28,7 @@ func (sr bankRepository) GetStatement(ctx context.Context, clientId int64) (mode
 		return nil, errors.New("client not found")
 	}
 
-	getTransactionsQuery := fmt.Sprintf(`SELECT descricao, tipo, valor, realizada_em FROM %s WHERE cliente_id = $1 ORDER BY id DESC`, TransactionTableName)
+	getTransactionsQuery := fmt.Sprintf(`SELECT descricao, tipo, valor, realizada_em FROM %s WHERE cliente_id = $1 ORDER BY id DESC LIMIT 10`, TransactionTableName)
 
 	rows, err := sr.db.Query(ctx, getTransactionsQuery, clientId)
 	if err != nil {
