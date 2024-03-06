@@ -29,5 +29,5 @@ func ConvertStatementEntityToDomain(
 }
 
 func ConvertAccountEntityToDomain(account entity.AccountEntity) models.BankAccountDomainInterface {
-	return models.NewBankAccountDomain(account.Saldo.Int64, account.Limite.Int64)
+	return models.NewBankAccountDomain(account.Limite.Int64, account.Saldo.Int64)
 }
