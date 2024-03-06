@@ -1,10 +1,11 @@
 package database
 
 import (
+	"context"
 	"fmt"
 
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
+	"github.com/jackc/pgx/v5/pgxpool"
+	_ "github.com/lib/pq"
 )
 
 type DBConfig struct {
@@ -16,7 +17,7 @@ type DBConfig struct {
 }
 
 type Database interface {
-	NewConnection() (*gorm.DB, error)
+	NewConnection() (*pgxpool.Pool, error)
 }
 
 func NewDatabase(databse string, dbConfig DBConfig) Database {
@@ -32,7 +33,7 @@ type postgresDatabase struct {
 	config DBConfig
 }
 
-func (pg postgresDatabase) NewConnection() (*gorm.DB, error) {
+func (pg postgresDatabase) NewConnection() (*pgxpool.Pool, error) {
 	dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable TimeZone=America/Sao_Paulo",
 		pg.config.Host,
 		pg.config.Port,
@@ -41,10 +42,10 @@ func (pg postgresDatabase) NewConnection() (*gorm.DB, error) {
 		pg.config.Dbname,
 	)
 
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	conn, err := pgxpool.New(context.Background(), dsn)
 	if err != nil {
 		return nil, fmt.Errorf("error to connect to database: %v", err)
 	}
 
-	return db, nil
+	return conn, nil
 }

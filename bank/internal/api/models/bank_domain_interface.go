@@ -5,6 +5,7 @@ import "time"
 type BankStatementDomainInterface interface {
 	GetTotalBalance() int64
 	GetLimit() int64
+	GetExtractDate() time.Time
 	GetLastTransactions() []Transaction
 	GetTransactionValue(transactionId int) int64
 	GetTransactionDescription(transactionId int) string

@@ -51,7 +51,7 @@ func NewBankStatementResponse(bankStatement models.BankStatementDomainInterface)
 		Saldo: Saldo{
 			Total:       bankStatement.GetTotalBalance(),
 			Limite:      bankStatement.GetLimit(),
-			DataExtrato: time.Now().Format(time.RFC3339),
+			DataExtrato: bankStatement.GetExtractDate().Format(time.RFC3339),
 		},
 		UltimasTransacoes: ultimasTransacoes,
 	}

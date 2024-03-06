@@ -5,6 +5,7 @@ import "time"
 type Balance struct {
 	Total         int64
 	Limit         int64
+	ExtractDate   time.Time
 }
 
 type Transaction struct {
@@ -25,6 +26,10 @@ func (sd *bankStatementDomain) GetTotalBalance() int64 {
 
 func (sd *bankStatementDomain) GetLimit() int64 {
 	return sd.Balance.Limit
+}
+
+func (sd *bankStatementDomain) GetExtractDate() time.Time {
+	return sd.Balance.ExtractDate
 }
 
 func (sd *bankStatementDomain) GetLastTransactions() []Transaction {

@@ -21,7 +21,7 @@ func (sc *bankControllerInterface) BankStatement(c *gin.Context) {
 			nil,
 			zap.String("journey", "Statement"),
 		)
-		c.JSON(http.StatusBadRequest, gin.H{
+		c.JSON(http.StatusUnprocessableEntity, gin.H{
 			"status": "error", "message": "ID is required",
 		})
 		return
@@ -34,9 +34,12 @@ func (sc *bankControllerInterface) BankStatement(c *gin.Context) {
 			zap.String("journey", "Statement"),
 		)
 
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status": "error", "message": err.Error(),
-		})
+		if err.Error() == "client not found" {
+			c.JSON(http.StatusNotFound, gin.H{})
+			return
+		}
+
+		c.JSON(http.StatusUnprocessableEntity, gin.H{})
 		return
 	}
 

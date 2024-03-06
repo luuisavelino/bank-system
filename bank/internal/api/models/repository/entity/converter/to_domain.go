@@ -1,6 +1,8 @@
 package converter
 
 import (
+	"time"
+
 	"github.com/luuisavelino/rinha-de-backend-2024-q1/internal/api/models"
 	"github.com/luuisavelino/rinha-de-backend-2024-q1/internal/api/models/repository/entity"
 )
@@ -18,8 +20,9 @@ func ConvertStatementEntityToDomain(
 	}
 
 	accountDomain := models.Balance{
-		Total: account.Saldo.Int64,
-		Limit: account.Limite.Int64,
+		Total:       account.Saldo.Int64,
+		Limit:       account.Limite.Int64,
+		ExtractDate: time.Now(),
 	}
 
 	return models.NewBankStatementDomain(accountDomain, transactionsDomain)

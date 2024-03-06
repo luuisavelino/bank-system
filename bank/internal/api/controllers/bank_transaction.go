@@ -1,10 +1,8 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/luuisavelino/rinha-de-backend-2024-q1/internal/api/controllers/model/request"
@@ -15,9 +13,6 @@ import (
 )
 
 func (sc *bankControllerInterface) BankTransaction(c *gin.Context) {
-	// calculate time
-	start := time.Now()
-
 	logger.Info("Init BankTransaction controller",
 		zap.String("journey", "Transaction"),
 	)
@@ -31,8 +26,6 @@ func (sc *bankControllerInterface) BankTransaction(c *gin.Context) {
 		c.JSON(http.StatusUnprocessableEntity, gin.H{
 			"status": "error", "message": err.Error(),
 		})
-
-		fmt.Println("BankTransaction took", time.Since(start))
 		return
 	}
 
@@ -42,11 +35,13 @@ func (sc *bankControllerInterface) BankTransaction(c *gin.Context) {
 			err,
 			zap.String("journey", "Transaction"),
 		)
-		c.JSON(http.StatusUnprocessableEntity, gin.H{
-			"status": "error", "message": err.Error(),
-		})
 
-		fmt.Println("BankTransaction took", time.Since(start))
+		if err.Error() == "insufficient funds" {
+			c.JSON(http.StatusNotFound, gin.H{})
+			return
+		}
+
+		c.JSON(http.StatusUnprocessableEntity, gin.H{})
 		return
 	}
 
@@ -66,8 +61,6 @@ func (sc *bankControllerInterface) BankTransaction(c *gin.Context) {
 		c.JSON(http.StatusUnprocessableEntity, gin.H{
 			"status": "error", "message": err.Error(),
 		})
-
-		fmt.Println("BankTransaction took", time.Since(start))
 		return
 	}
 
@@ -76,6 +69,4 @@ func (sc *bankControllerInterface) BankTransaction(c *gin.Context) {
 	)
 
 	c.JSON(http.StatusOK, response.NewBankTransactionResponse(account))
-
-	fmt.Println("BankTransaction took", time.Since(start))
 }

@@ -1,6 +1,18 @@
 version: "3.5"
 
 services:
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "9999:9999" 
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: "150MB"
+
   postgres:
     container_name: rinha_postgres
     image: postgres:14-alpine
@@ -19,12 +31,13 @@ services:
       PG_MAINTENANCE_WORK_MEM: '128MB'  # Sets the maximum amount of memory for maintenance operations, such as vacuuming
       PG_EFFECTIVE_CACHE_SIZE: '2GB'    # Advises the planner on how much memory is available for caching data
       PG_SHARED_BUFFERS: '512MB'        # Sets the amount of memory the database server uses for shared memory buffers
-      PG_MAX_CONNECTIONS: '40'          # Adjusts the maximum number of concurrent connections
+      PG_MAX_CONNECTIONS: '100'         # Adjusts the maximum number of concurrent connections
+      PG_MIN_CONNECTIONS: '50'
     deploy:
       resources:
         limits:
-          cpus: '0.5'
-          memory: "200MB"
+          cpus: '1'
+          memory: "300MB"
 
 networks:
   default:
