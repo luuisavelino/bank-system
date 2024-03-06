@@ -29,7 +29,7 @@ func (sr bankRepository) DoTransaction(ctx context.Context, clientId int64, bank
 
 	defer tx.Rollback(ctx)
 
-	getAccountQuery := fmt.Sprintf(`SELECT saldo, limite FROM %s WHERE id = $1`, AccountTableName)
+	getAccountQuery := fmt.Sprintf(`SELECT saldo, limite FROM %s WHERE id = $1 FOR UPDATE`, AccountTableName)
 
 	err = tx.QueryRow(ctx, getAccountQuery, clientId).Scan(&account.Saldo, &account.Limite)
 	if err != nil {
