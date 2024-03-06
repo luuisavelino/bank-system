@@ -1,10 +1,7 @@
 package env
 
 import (
-	"log"
 	"os"
-
-	"github.com/joho/godotenv"
 )
 
 var (
@@ -21,11 +18,6 @@ var (
 )
 
 func init() {
-	err := godotenv.Load(".env")
-	if err != nil {
-		log.Fatal("Error loading .env file", err)
-	}
-
 	API_PORT = os.Getenv("API_PORT")
 	LOG_LEVEL = os.Getenv("LOG_LEVEL")
 	LOG_OUTPUT = os.Getenv("LOG_OUTPUT")
